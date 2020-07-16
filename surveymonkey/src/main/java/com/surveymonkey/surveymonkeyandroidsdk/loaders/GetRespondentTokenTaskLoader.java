@@ -67,6 +67,7 @@ public class GetRespondentTokenTaskLoader
 
     private JSONObject retrieveRespondentToken(String inputURL) throws IOException, JSONException, SMError {
         InputStream is = null;
+        JSONObject contentAsJSON = null;
         try {
             URL url = new URL(inputURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -77,7 +78,7 @@ public class GetRespondentTokenTaskLoader
             conn.connect();
             handleResponseCode(conn.getResponseCode(), conn);
             is = conn.getInputStream();
-            JSONObject contentAsJSON = readIt(is);
+            contentAsJSON = readIt(is);
         } catch (SocketTimeoutException e) {
             this.mError = SMError.sdkServerErrorFromCode(SMError.ErrorType.ERROR_CODE_BAD_CONNECTION, e);
             Log.d("SM_SDK_DEBUG", this.mError.getDescription());
@@ -87,7 +88,7 @@ public class GetRespondentTokenTaskLoader
                 is.close();
             }
         }
-        return null;
+        return contentAsJSON;
     }
 
     private JSONObject readIt(InputStream stream) throws IOException {
