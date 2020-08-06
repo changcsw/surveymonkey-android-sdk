@@ -36,3 +36,32 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
 }
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories.mavenDeployer {
+        name = 'mavenCentralReleaseDeployer'
+        /*snapshotRepository(url: "http://nexus.puzzleplusgames.net/repository/maven-snapshots/") {
+            authentication(userName: "maven_developer", password: "fun123456")
+            pom.version = project.ext.versionName + "-SNAPSHOT"
+        }*/
+        repository(url: "http://nexus.puzzleplusgames.net/repository/maven-releases/") {
+            authentication(userName: "maven_developer", password: "fun123456")
+        }
+        pom.project {
+            name "surveymonkey-android-sdk" // artifact名称
+            version "2.0.0" // artifact版本
+            artifactId "surveymonkey-android-sdk" // artifact id
+            groupId "com.puzzle.surveymonkey" // artifact所属Group Id
+            packaging "aar" // 文件格式，例如jar、aar
+            description "Modify surveymonkey 2.0.0，Support AndroidX." // 描述
+            url "https://github.com/changcsw/surveymonkey-android-sdk"
+        }
+    }
+}
+gradle.taskGraph.beforeTask { Task aTask ->
+    if (aTask == uploadArchives) {
+        uploadArchives.dependsOn 'clean'
+        uploadArchives.dependsOn 'assembleRelease'
+    }
+}
