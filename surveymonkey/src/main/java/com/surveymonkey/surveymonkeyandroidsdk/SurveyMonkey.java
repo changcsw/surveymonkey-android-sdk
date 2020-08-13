@@ -20,7 +20,6 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class SurveyMonkey {
     private static final String SM_BASE_URL = "https://www.surveymonkey.com/r/";
     private static final String SURVEY_STATUS = "survey_status";
@@ -40,7 +39,6 @@ public class SurveyMonkey {
         Resources res = activity.getResources();
         onStart(activity, requestCode, collectorHash, String.format(res.getString(R.string.sm_prompt_title_text), new Object[]{appName}), res.getString(R.string.sm_prompt_message_text), 259200000L, 1814400000L, 7884000000L, customVariables);
     }
-
 
     public void onStart(final Activity activity, final int requestCode, final String collectorHash, final String alertTitleText, final String alertBodyText, long afterInstallInterval, final long afterDeclineInterval, final long afterAcceptInterval, final JSONObject... customVariables) {
         final Context appContext = activity.getApplicationContext();
@@ -99,7 +97,6 @@ public class SurveyMonkey {
         }
     }
 
-
     public void startSMFeedbackActivityForResult(Activity context, int requestCode, String collectorHash, JSONObject... customVariables) {
         this.mContext = context;
         this.mRequestCode = requestCode;
@@ -129,12 +126,10 @@ public class SurveyMonkey {
         sPageTask.execute(new String[]{SMNetworkUtils.buildURL(this.mCollectorHash, this.mCustomVariables)});
     }
 
-
     public static SMFeedbackFragment newSMFeedbackFragmentInstance(String collectorHash, JSONObject... customVariables) {
         JSONObject customVariablesObj = (customVariables.length > 0) ? customVariables[0] : null;
         return SMFeedbackFragment.newInstance(SMNetworkUtils.buildURL(collectorHash, customVariablesObj), null, false);
     }
-
 
     private static boolean isNetworkConnected(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -8,17 +8,12 @@ import android.util.Log;
 import androidx.fragment.app.FragmentActivity;
 
 import com.surveymonkey.surveymonkeyandroidsdk.utils.SMError;
+
 import org.json.JSONObject;
-
-
-
-
-
 
 public class SMFeedbackActivity
         extends FragmentActivity
-        implements SMFeedbackFragmentListener
-{
+        implements SMFeedbackFragmentListener {
     public static final String KEY_SM_SPAGE_HTML = "smSPageHTML";
     public static final String KEY_SM_SPAGE_URL = "smSPageURL";
     public static final String KEY_SM_ERROR = "smError";
@@ -38,7 +33,6 @@ public class SMFeedbackActivity
         context.startActivityForResult(intent, requestCode);
     }
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
@@ -52,8 +46,6 @@ public class SMFeedbackActivity
             getSupportFragmentManager().beginTransaction().add(16908290, SMFeedbackFragment.newInstance(this.mURL, this.mSPageHTML, true), SMFeedbackFragment.TAG).commit();
         }
     }
-
-
 
     public void onBackPressed() {
         this.mError = SMError.sdkClientErrorFromCode(SMError.ErrorType.ERROR_CODE_USER_CANCELED, null);

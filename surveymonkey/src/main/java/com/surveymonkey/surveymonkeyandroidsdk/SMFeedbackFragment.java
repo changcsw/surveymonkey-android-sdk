@@ -27,17 +27,14 @@ import com.surveymonkey.surveymonkeyandroidsdk.loaders.GetRespondentTaskLoader;
 import com.surveymonkey.surveymonkeyandroidsdk.loaders.GetRespondentTokenTaskLoader;
 import com.surveymonkey.surveymonkeyandroidsdk.loaders.RetrieveSPageTask;
 import com.surveymonkey.surveymonkeyandroidsdk.utils.SMError;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-public class SMFeedbackFragment
-        extends Fragment
-        implements SMExceptionHandler
-{
+public class SMFeedbackFragment extends Fragment implements SMExceptionHandler {
     public static final String TAG = SMFeedbackFragment.class.getSimpleName();
 
     private static final int RESPONDENT_TOKEN_LOADER_KEY = 1;
@@ -74,7 +71,6 @@ public class SMFeedbackFragment
         return fragment;
     }
 
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.mHasPreLoadedHTML = false;
@@ -89,8 +85,7 @@ public class SMFeedbackFragment
                 loadSurveyPage();
             } else {
 
-                RetrieveSPageTask sPageTask = new RetrieveSPageTask()
-                {
+                RetrieveSPageTask sPageTask = new RetrieveSPageTask() {
                     protected void onPostExecute(JSONObject data) {
                         try {
                             if (data != null) {
@@ -98,8 +93,7 @@ public class SMFeedbackFragment
                                 SMFeedbackFragment.this.mSPageHTML = data.getString("html");
                                 if (!sdkData.getBoolean("collector_closed")) {
                                     SMFeedbackFragment.this.loadSurveyPage();
-                                }
-                                else {
+                                } else {
 
                                     SMFeedbackFragment.this.handleCollectorClosed();
                                 }
@@ -112,16 +106,14 @@ public class SMFeedbackFragment
                         }
                     }
                 };
-                sPageTask.execute(new String[] { this.mURL });
+                sPageTask.execute(new String[]{this.mURL});
             }
         }
     }
 
-
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { return inflater.inflate(R.layout.fragment_smfeedback, container, false); }
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_smfeedback, container, false);
+    }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -134,7 +126,6 @@ public class SMFeedbackFragment
             this.mProgressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.sm_loading_status));
         }
     }
-
 
     public void onDestroy() {
         if (this.connectivityMonitor != null && getActivity() != null) {
@@ -158,7 +149,7 @@ public class SMFeedbackFragment
     private void loadSurveyPage() {
         if (getView() != null) {
             this.mHasLoadedSPageWebView = true;
-            this.mWebView = (WebView)getView().findViewById(R.id.sm_feedback_webview);
+            this.mWebView = (WebView) getView().findViewById(R.id.sm_feedback_webview);
             this.mWebView.getSettings().setJavaScriptEnabled(true);
             this.mWebView.setWebViewClient(new SMWebviewClient());
             this.mWebView.loadDataWithBaseURL(this.mURL, this.mSPageHTML, null, "UTF-8", null);
@@ -170,7 +161,6 @@ public class SMFeedbackFragment
         Log.d("SM_SDK_DEBUG", this.mError.getDescription());
         handleError(this.mError);
     }
-
 
     public GetRespondentTokenTaskLoader onCreateRespondentTokenTaskLoader(int id, Bundle args) {
         this.getRespondentTokenTaskLoader = new GetRespondentTokenTaskLoader(getActivity(), this.mTokenURL, this);
@@ -187,20 +177,17 @@ public class SMFeedbackFragment
             try {
                 this.mToken = data.getString("respondent_token");
                 this.mMasheryApiKey = data.getString("mashery_api_key");
-                getActivity().getSupportLoaderManager().restartLoader(2, null, new LoaderManager.LoaderCallbacks<JSONObject>()
-                {
+                getActivity().getSupportLoaderManager().restartLoader(2, null, new LoaderManager.LoaderCallbacks<JSONObject>() {
                     public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
                         return SMFeedbackFragment.this.onCreateRespondentTaskLoader(id, args);
                     }
 
+                    public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
+                        SMFeedbackFragment.this.onGetRespondentTaskLoadFinished(loader, data);
+                    }
 
-
-                    public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) { SMFeedbackFragment.this.onGetRespondentTaskLoadFinished(loader, data); }
-
-
-
-
-                    public void onLoaderReset(Loader<JSONObject> loader) {}
+                    public void onLoaderReset(Loader<JSONObject> loader) {
+                    }
                 });
             } catch (JSONException e) {
                 this.mError = SMError.sdkServerErrorFromCode(SMError.ErrorType.ERROR_CODE_TOKEN, e);
@@ -225,14 +212,12 @@ public class SMFeedbackFragment
         this.getRespondentTaskLoader = null;
     }
 
-
     private void handleRespondent(JSONObject r) {
         try {
             if (getActivity() != null) {
-                ((SMFeedbackFragmentListener)getActivity()).onFetchRespondentSuccess(r);
+                ((SMFeedbackFragmentListener) getActivity()).onFetchRespondentSuccess(r);
             }
-        }
-        catch (ClassCastException cce) {
+        } catch (ClassCastException cce) {
             Log.d("SM_SDK_DEBUG", "SMFeedbackFragmentListener has not been implemented");
             showEndOfSurveyOverlay();
         }
@@ -241,10 +226,9 @@ public class SMFeedbackFragment
     public void handleError(SMError e) {
         try {
             if (getActivity() != null) {
-                ((SMFeedbackFragmentListener)getActivity()).onFetchRespondentFailure(e);
+                ((SMFeedbackFragmentListener) getActivity()).onFetchRespondentFailure(e);
             }
-        }
-        catch (ClassCastException cce) {
+        } catch (ClassCastException cce) {
             Log.d("SM_SDK_DEBUG", "SMFeedbackFragmentListener has not been implemented");
             if (e.getErrorCode() == SMError.ErrorType.ERROR_CODE_COLLECTOR_CLOSED.getValue()) {
                 showSurveyClosedOverlay();
@@ -273,20 +257,19 @@ public class SMFeedbackFragment
 
     private void getToken() {
         if (getActivity() != null) {
-            getActivity().getSupportLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<JSONObject>()
-            {
+            getActivity().getSupportLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<JSONObject>() {
                 public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
                     return SMFeedbackFragment.this.onCreateRespondentTokenTaskLoader(id, args);
                 }
 
 
+                public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
+                    SMFeedbackFragment.this.onGetRespondentTokenTaskLoadFinished(loader, data);
+                }
 
-                public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) { SMFeedbackFragment.this.onGetRespondentTokenTaskLoadFinished(loader, data); }
 
-
-
-
-                public void onLoaderReset(Loader<JSONObject> loader) {}
+                public void onLoaderReset(Loader<JSONObject> loader) {
+                }
             });
         } else {
             Log.d("SM_SDK_DEBUG", "getActivity is null in SMFeedbackFragment.getToken()");
@@ -295,7 +278,8 @@ public class SMFeedbackFragment
 
     private class SMWebviewClient
             extends WebViewClient {
-        private SMWebviewClient() {}
+        private SMWebviewClient() {
+        }
 
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             URL resourceURL = null;
@@ -317,13 +301,11 @@ public class SMFeedbackFragment
             }
         }
 
-
         public void onPageFinished(WebView view, String url) {
             if (SMFeedbackFragment.this.getActivity() != null && !SMFeedbackFragment.this.getActivity().isDestroyed()) {
                 SMFeedbackFragment.this.mProgressDialog.dismiss();
             }
         }
-
 
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (!url.contains("surveymonkey.com/r/")) {
@@ -336,26 +318,25 @@ public class SMFeedbackFragment
     }
 
     public static class ConnectivityMonitor
-            extends BroadcastReceiver
-    {
+            extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             if (!isNetworkConnected(context)) {
-                ((FragmentActivity)context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_no_network).setVisibility(View.VISIBLE);
-                ((FragmentActivity)context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_webview).setVisibility(View.GONE);
+                ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_no_network).setVisibility(View.VISIBLE);
+                ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_webview).setVisibility(View.GONE);
             } else {
-                ((FragmentActivity)context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_no_network).setVisibility(View.GONE);
-                ((FragmentActivity)context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_webview).setVisibility(View.VISIBLE);
+                ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_no_network).setVisibility(View.GONE);
+                ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(SMFeedbackFragment.TAG).getView().findViewById(R.id.sm_feedback_webview).setVisibility(View.VISIBLE);
             }
         }
 
         public boolean isNetworkConnected(Context context) {
-            FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
+            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
             if (fragmentManager != null) {
                 Fragment f = fragmentManager.findFragmentByTag(SMFeedbackFragment.TAG);
                 if (f != null) {
                     FragmentActivity fragmentActivity = f.getActivity();
                     if (fragmentActivity != null) {
-                        ConnectivityManager manager = (ConnectivityManager)fragmentActivity.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+                        ConnectivityManager manager = (ConnectivityManager) fragmentActivity.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
                         if (manager != null) {
                             NetworkInfo activeNetInfo = manager.getActiveNetworkInfo();
                             return (activeNetInfo != null && activeNetInfo.isConnected());
