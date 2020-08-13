@@ -20,8 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class GetRespondentTokenTaskLoader
-        extends AsyncTaskLoader {
+public class GetRespondentTokenTaskLoader extends AsyncTaskLoader {
     private static final String RESPONDENT_TOKEN = "respondent_token";
     private static final String MASHERY_API_KEY = "mashery_api_key";
     private static final String ERROR = "error";

@@ -2,6 +2,7 @@ package com.surveymonkey.surveymonkeyandroidsdk.loaders;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,15 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
-
-public class RetrieveSPageTask
-        extends AsyncTask<String, Void, JSONObject>
-{
+public class RetrieveSPageTask extends AsyncTask<String, Void, JSONObject> {
     private static final String EMBED_DATA = "embed_data";
 
     protected JSONObject doInBackground(String... urlString) {
@@ -26,7 +24,7 @@ public class RetrieveSPageTask
         JSONObject sPageJSON = new JSONObject();
         try {
             URL url = new URL(uri);
-            urlConnection = (HttpURLConnection)url.openConnection();
+            urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             sPageJSON = parseResponse(readIt(in));
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import androidx.loader.content.AsyncTaskLoader;
 
 import com.surveymonkey.surveymonkeyandroidsdk.SMExceptionHandler;
 import com.surveymonkey.surveymonkeyandroidsdk.utils.SMError;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,17 +15,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+
 import javax.net.ssl.HttpsURLConnection;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
-
-public class GetRespondentTaskLoader
-        extends AsyncTaskLoader
-{
+public class GetRespondentTaskLoader extends AsyncTaskLoader {
     private static final String RESPONDENT_URL = "https://api.surveymonkey.net/sdk/v1/respondents?api_key=";
     private String mToken;
     private String mMasheryApiKey;
@@ -49,10 +46,9 @@ public class GetRespondentTaskLoader
         }
     }
 
-
-    private JSONObject getResponse() { return this.mResponse; }
-
-
+    private JSONObject getResponse() {
+        return this.mResponse;
+    }
 
     public JSONObject loadInBackground() {
         try {
@@ -71,7 +67,7 @@ public class GetRespondentTaskLoader
         try {
             URL url = new URL("https://api.surveymonkey.net/sdk/v1/respondents?api_key=" + this.mMasheryApiKey);
             String tokenString = "bearer " + token;
-            HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("GET");
@@ -110,6 +106,7 @@ public class GetRespondentTaskLoader
             return null;
         }
     }
+
     private void handleResponseCode(int statusCode, HttpURLConnection connection) {
         if (statusCode != 200) {
             switch (statusCode) {
@@ -122,7 +119,8 @@ public class GetRespondentTaskLoader
                     this.mError = SMError.sdkServerErrorFromCode(SMError.ErrorType.ERROR_CODE_INTERNAL_SERVER_ERROR, null);
                     Log.d("SM_SDK_DEBUG", this.mError.getDescription());
                     connection.disconnect();
-                    this.mExceptionHandler.handleError(this.mError); break;
+                    this.mExceptionHandler.handleError(this.mError);
+                    break;
             }
             this.mError = SMError.sdkServerErrorFromCode(SMError.ErrorType.ERROR_CODE_INTERNAL_SERVER_ERROR, null);
             Log.d("SM_SDK_DEBUG", this.mError.getDescription());

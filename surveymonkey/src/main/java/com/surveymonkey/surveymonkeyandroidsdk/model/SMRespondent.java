@@ -7,34 +7,26 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-public class SMRespondent
-{
+public class SMRespondent {
     private static final String RESPONDENT_ID = "respondent_id";
     private static final String COMPLETION_STATUS = "completion_status";
     private static final String DATE_START = "date_start";
     private static final String DATE_MODIFIED = "date_modified";
     private static final String RESPONSES = "responses";
-    private static final String[] SM_COMPLETION_STATUSES = { "partially", "completed" };
-
+    private static final String[] SM_COMPLETION_STATUSES = {"partially", "completed"};
 
     private static final String PAPI_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
-
     private SMCompletionStatus mCompletionStatus;
-
     private Calendar mDateModified;
-
     private Calendar mDateStarted;
-
     private String mRespondentID;
-
     private ArrayList<SMQuestionResponse> mQuestionResponses;
-
 
     public SMRespondent(JSONObject jsonObject) {
         try {
@@ -49,8 +41,7 @@ public class SMRespondent
                 responses.add(currentResponse);
             }
             this.mQuestionResponses = responses;
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -62,51 +53,46 @@ public class SMRespondent
                 Date simpleDateFormat = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).parse(dateString.substring(0, dateString.length() - 2));
                 gregorianCalendarDateString = new GregorianCalendar();
                 gregorianCalendarDateString.setTime(simpleDateFormat);
-            } catch (ParseException parseException) {}
+            } catch (ParseException parseException) {
+            }
         }
-
-
         return gregorianCalendarDateString;
     }
 
-
-
-
-    public enum SMCompletionStatus
-    {
+    public enum SMCompletionStatus {
         SMCompletionStatusPartiallyComplete(0),
         SMCompletionStatusComplete(1);
 
         public final int mValue;
 
+        SMCompletionStatus(int value) {
+            this.mValue = value;
+        }
 
-        SMCompletionStatus(int value) { this.mValue = value; }
-
-
-
-        public int getValue() { return this.mValue; }
+        public int getValue() {
+            return this.mValue;
+        }
     }
 
+    public ArrayList getQuestionResponses() {
+        return this.mQuestionResponses;
+    }
 
+    public SMCompletionStatus getCompletionStatus() {
+        return this.mCompletionStatus;
+    }
 
-    public ArrayList getQuestionResponses() { return this.mQuestionResponses; }
+    public Calendar getDateModified() {
+        return this.mDateModified;
+    }
 
+    public Calendar getDateStarted() {
+        return this.mDateStarted;
+    }
 
-
-    public SMCompletionStatus getCompletionStatus() { return this.mCompletionStatus; }
-
-
-
-    public Calendar getDateModified() { return this.mDateModified; }
-
-
-
-    public Calendar getDateStarted() { return this.mDateStarted; }
-
-
-
-    public String getRespondentID() { return this.mRespondentID; }
-
+    public String getRespondentID() {
+        return this.mRespondentID;
+    }
 
     public String getDescription() {
         int size = 0;

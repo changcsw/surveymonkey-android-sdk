@@ -3,16 +3,7 @@ package com.surveymonkey.surveymonkeyandroidsdk.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
-
-
-
-
-
-public class SMAnswerResponse
-{
+public class SMAnswerResponse {
     public static final String TEXT_RESPONSE = "text_response";
     public static final String ROW_ID = "row_id";
     public static final String ROW_VALUE = "row_value";
@@ -60,45 +51,57 @@ public class SMAnswerResponse
     }
 
 
-    public String getTextResponse() { return this.mTextResponse; }
+    public String getTextResponse() {
+        return this.mTextResponse;
+    }
 
 
-
-    public String getRowID() { return this.mRowID; }
-
-
-
-    public int getRowIndex() { return this.mRowIndex; }
+    public String getRowID() {
+        return this.mRowID;
+    }
 
 
-
-    public String getRowValue() { return this.mRowValue; }
-
-
-
-    public String getColumnID() { return this.mColumnID; }
+    public int getRowIndex() {
+        return this.mRowIndex;
+    }
 
 
-
-    public int getColumnIndex() { return this.mColumnIndex; }
-
-
-
-    public String getColumnValue() { return this.mColumnValue; }
+    public String getRowValue() {
+        return this.mRowValue;
+    }
 
 
-
-    public String getColumnDropdownID() { return this.mColumnDropdownID; }
-
-
-
-    public int getColumnDropdownIndex() { return this.mColumnDropdownIndex; }
+    public String getColumnID() {
+        return this.mColumnID;
+    }
 
 
+    public int getColumnIndex() {
+        return this.mColumnIndex;
+    }
 
-    public String getColumnDropdownValue() { return this.mColumnDropdownValue; }
+
+    public String getColumnValue() {
+        return this.mColumnValue;
+    }
 
 
+    public String getColumnDropdownID() {
+        return this.mColumnDropdownID;
+    }
 
-    public String getDescription() { return "<SMAnswerResponse: " + this + "; rowValue='" + this.mRowValue + "'; columnValue='" + this.mColumnValue + "'; columnDropdownValue='" + this.mColumnDropdownValue + "'; textResponse='" + this.mTextResponse + " >"; }
+
+    public int getColumnDropdownIndex() {
+        return this.mColumnDropdownIndex;
+    }
+
+
+    public String getColumnDropdownValue() {
+        return this.mColumnDropdownValue;
+    }
+
+
+    public String getDescription() {
+        return "<SMAnswerResponse: " + this + "; rowValue='" + this.mRowValue + "'; columnValue='" + this.mColumnValue + "'; columnDropdownValue='" + this.mColumnDropdownValue + "'; textResponse='" + this.mTextResponse + " >";
+    }
 }
