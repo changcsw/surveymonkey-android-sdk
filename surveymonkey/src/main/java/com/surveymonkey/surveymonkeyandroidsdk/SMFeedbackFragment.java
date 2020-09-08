@@ -283,7 +283,9 @@ public class SMFeedbackFragment extends Fragment implements SMExceptionHandler {
 
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             URL resourceURL = null;
-            SMFeedbackFragment.this.mProgressDialog.show();
+            if (SMFeedbackFragment.this.getActivity() != null && !SMFeedbackFragment.this.getActivity().isDestroyed()) {
+                SMFeedbackFragment.this.mProgressDialog.show();
+            }
             try {
                 resourceURL = new URL(url);
             } catch (MalformedURLException e) {
